@@ -1,0 +1,111 @@
+<!-- eventdialog.ui -->
+<ui version="4.0">
+ <class>EventDialog</class>
+ <widget class="QDialog" name="EventDialog">
+  <property name="windowTitle">
+   <string>添加/编辑事件</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="titleLabel">
+     <property name="text">
+      <string>标题:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="titleLineEdit"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="dateLabel">
+     <property name="text">
+      <string>日期:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QDateEdit" name="dateEdit">
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="timeLabel">
+     <property name="text">
+      <string>时间:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QTimeEdit" name="timeEdit"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="categoryLabel">
+     <property name="text">
+      <string>类别:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QComboBox" name="categoryComboBox">
+     <item>
+      <property name="text">
+       <string>工作</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>生日</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>假期</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="remindLabel">
+     <property name="text">
+      <string>提醒时间:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QTimeEdit" name="remindTimeEdit"/>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="descriptionLabel">
+     <property name="text">
+      <string>描述:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QTextEdit" name="descriptionTextEdit"/>
+   </item>
+   <item row="6" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="buttonBox">
+     <item>
+      <widget class="QPushButton" name="okButton">
+       <property name="text">
+        <string>确定</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelButton">
+       <property name="text">
+        <string>取消</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
