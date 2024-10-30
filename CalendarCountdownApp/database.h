@@ -1,27 +1,17 @@
-// database/database.h
 #ifndef DATABASE_H
 #define DATABASE_H
 
 #include <QString>
-#include <QSqlDatabase>
 #include <QList>
 #include "event.h"
 
-class Database
-{
+class Database {
 public:
-    Database(const QString &path);
-    ~Database();
-
-    bool initialize();
-    bool addEvent(const Event &event);
-    QList<Event> getEventsByDate(const QString &date);
-    Event getNextEvent();
-    QList<Event> getAllEvents();
+    void addEvent(const Event &event);
+    QList<Event> getEvents() const;
 
 private:
-    QSqlDatabase db;
-    bool createTable();
+    QList<Event> events; // 存储事件列表
 };
 
 #endif // DATABASE_H

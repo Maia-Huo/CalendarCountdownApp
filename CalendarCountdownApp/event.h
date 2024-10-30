@@ -1,21 +1,52 @@
-// models/event.h
+//#ifndef EVENT_H
+//#define EVENT_H
+
+//#include <QString>
+//#include <QDateTime>
+
+//class Event {
+//public:
+//    Event(const QString &title, const QDateTime &dateTime, const QString &category);
+
+//    QString getTitle() const;
+//    QDateTime getDateTime() const;
+//    QString getCategory() const;
+
+//private:
+//    QString title;
+//    QDateTime dateTime;
+//    QString category; // 事件分类
+//};
+
+//#endif // EVENT_H
+
+
+// event.h
 #ifndef EVENT_H
 #define EVENT_H
 
 #include <QString>
+#include <QDateTime>
 
-struct Event
-{
-    int id;
+class Event {
+public:
+    Event(const QString &title, const QDateTime &dateTime, const QString &category, const QString &description);
+
+    QString getTitle() const;
+    QDateTime getDateTime() const;
+    QString getCategory() const;
+    QString getDescription() const;
+
+private:
     QString title;
-    QString date; // 格式: "yyyy-MM-dd"
-    QString time; // 格式: "HH:mm"
+    QDateTime dateTime;
     QString category;
-    QString remindTime; // 提醒时间, 可以存储为"yyyy-MM-dd HH:mm"或提前的分钟数
     QString description;
-
-    Event()
-        : id(-1) {}
 };
 
 #endif // EVENT_H
+
+
+
+
+

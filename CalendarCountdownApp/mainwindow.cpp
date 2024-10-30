@@ -1,96 +1,120 @@
+//#include "mainwindow.h"
+//#include "ui_mainwindow.h"
+//#include <QTimer>
+//#include <QMessageBox>
+//#include <QDateTime>
+//#include "eventdialog.h"   // 添加这一行
+//#include "notifier.h"      // 添加这一行
+
+//MainWindow::MainWindow(QWidget *parent)
+//    : QMainWindow(parent), ui(new Ui::MainWindow) {
+//    ui->setupUi(this);
+
+//    tabWidget = new QTabWidget(this);
+//    calendarWidget = new QCalendarWidget(this);
+//    tabWidget->addTab(calendarWidget, "月视图");
+//    setCentralWidget(tabWidget);
+
+//    setupCalendar();
+
+//    QTimer *timer = new QTimer(this);
+//    connect(timer, &QTimer::timeout, this, &MainWindow::checkUpcomingEvents);
+//    timer->start(60000); // 每分钟检查一次
+//}
+
+//MainWindow::~MainWindow() {
+//    delete ui;
+//}
+
+//void MainWindow::setupCalendar() {
+//    connect(calendarWidget, &QCalendarWidget::clicked, this, [=](const QDate &date) {
+//        EventDialog dialog(this);
+//        if (dialog.exec() == QDialog::Accepted) {
+//            Event newEvent = dialog.getEvent();
+//            events.append(newEvent);
+//            // 在日历中显示事件的逻辑
+//        }
+//    });
+//}
+
+//void MainWindow::checkUpcomingEvents() {
+//    for (const Event &event : events) {
+//        if (event.getDateTime() < QDateTime::currentDateTime().addSecs(60)) { // 修改为 addSecs(60)
+//            Notifier::showNotification(event.getTitle() + "即将到来!"); // 修正字符串
+//        }
+//    }
+//}
+
+//void MainWindow::showCountdown() {
+//    if (events.isEmpty()) return;
+
+//    Event upcomingEvent = events.first(); // 取第一个事件
+//    // 实现倒计时显示的逻辑
+//}
+
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QTimer>
+#include <QMessageBox>
 #include <QDateTime>
+#include "eventdialog.h"
+#include "notifier.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    db("database/calendar.db")
-{
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    db.initialize();
 
-    //点击事件
-    connect(ui->calendarWidget, &QCalendarWidget::clicked, this, &MainWindow::on_calendarDataClicked);
-    connect(ui->addEventButton, &QPushButton::clicked, this, &MainWindow::on_addEventButton_clicked);
+    connect(ui->addEventButton, &QPushButton::clicked, this, &MainWindow::addEvent);
+    connect(calendarWidget, &QCalendarWidget::clicked, this, &MainWindow::showSelectedDateEvents);
 
-    countdownTimer = new QTimer(this);
-    connect(countdownTimer, &QTimer::timeout, this, &MainWindow::updateCountdown);
-    countdownTimer->start(1000);
-
-    QDate today = QDate::currentDate();
-    ui->calendarWidget->setSelectedDate(today);
-    updateEventList(today);
-
-    notifier.start();
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &MainWindow::checkUpcomingEvents);
+    timer->start(60000); // 每分钟检查一次
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::on_calendarDateClicked(const QDate &date)
-{
-    updateEventList(date);
-}
-
-void MainWindow::on_addEventButton_clicked()
-{
+void MainWindow::addEvent() {
     EventDialog dialog(this);
-    if (dialog.exec() == QDialog::Accepted)
-    {
-        Event event = dialog.getEvent();
-        db.addEvent(event);
-        updateEventList(event.date);
-        notifier.checkAndNotify(); // 检查是否需要提醒
+    if (dialog.exec() == QDialog::Accepted) {
+        Event newEvent = dialog.getEvent();
+        events.append(newEvent);
+        updateEventList();
+        // 在日历中显示事件
+        // 你需要实现相应的逻辑以在日历上标记事件
     }
 }
 
-void MainWindow::updateEventList(const QDate &date)
-{
+void MainWindow::updateEventList() {
     ui->eventListWidget->clear();
-    QList<Event> events = db.getEventsByDate(date.toString("yyyy-MM-dd"));
-    for (const auto &event : events)
-    {
-        QString itemText = QString("%1 %2").arg(event.time, event.title);
-        QListWidgetItem *item = new QListWidgetItem(itemText, ui->eventListWidget);
-        item->setData(Qt::UserRole, event.id);
+    for (const Event &event : events) {
+        ui->eventListWidget->addItem(event.getTitle());
     }
 }
 
-void MainWindow::updateCountdown()
-{
-    Event nextEvent = db.getNextEvent();
-    if (nextEvent.id != -1)
-    {
-        QDateTime eventDateTime = QDateTime::fromString(nextEvent.date + " " + nextEvent.time, "yyyy-MM-dd HH:mm");
-        QDateTime currentDateTime = QDateTime::currentDateTime();
-        qint64 seconds = currentDateTime.secsTo(eventDateTime);
-        if (seconds > 0)
-        {
-            int days = seconds / 86400;
-            seconds %= 86400;
-            int hours = seconds / 3600;
-            seconds %= 3600;
-            int minutes = seconds / 60;
-            int secs = seconds % 60;
-            QString countdown = QString("下一个事件: %1\n还有 %2 天 %3 小时 %4 分钟 %5 秒")
-                                    .arg(nextEvent.title)
-                                    .arg(days)
-                                    .arg(hours)
-                                    .arg(minutes)
-                                    .arg(secs);
-            ui->countdownLabel->setText(countdown);
-        }
-        else
-        {
-            ui->countdownLabel->setText("事件已过期");
+void MainWindow::showSelectedDateEvents(const QDate &date) {
+    ui->eventListWidget->clear();
+    for (const Event &event : events) {
+        if (event.getDateTime().date() == date) {
+            ui->eventListWidget->addItem(event.getTitle());
         }
     }
-    else
-    {
-        ui->countdownLabel->setText("没有即将到来的事件");
+}
+
+void MainWindow::checkUpcomingEvents() {
+    for (const Event &event : events) {
+        if (event.getDateTime() < QDateTime::currentDateTime().addSecs(60)) {
+            Notifier::showNotification(event.getTitle() + "即将到来!");
+        }
     }
+}
+
+void MainWindow::showCountdown() {
+    if (events.isEmpty()) return;
+
+    Event upcomingEvent = events.first(); // 取第一个事件
+    // 实现倒计时显示的逻辑
 }

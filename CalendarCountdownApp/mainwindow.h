@@ -1,43 +1,69 @@
+//#ifndef MAINWINDOW_H
+//#define MAINWINDOW_H
+
+//#include <QMainWindow>
+//#include <QCalendarWidget>
+//#include <QTabWidget>
+//#include <QList>
+//#include "event.h"
+
+//QT_BEGIN_NAMESPACE
+//namespace Ui { class MainWindow; }
+//QT_END_NAMESPACE
+
+//class MainWindow : public QMainWindow {
+//    Q_OBJECT
+
+//public:
+//    MainWindow(QWidget *parent = nullptr);
+//    ~MainWindow();
+
+//private slots:
+//    void checkUpcomingEvents();
+
+//private:
+//    Ui::MainWindow *ui;
+//    QTabWidget *tabWidget;
+//    QCalendarWidget *calendarWidget;
+//    QList<Event> events; // 存储事件列表
+
+//    void setupCalendar();
+//    void showCountdown();
+//};
+
+//#endif // MAINWINDOW_H
+
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-
 #include <QMainWindow>
 #include <QCalendarWidget>
-#include <QLabel>
-#include <QListWidget>
-
-//导入其他.h文件
-
+#include <QList>
+#include "event.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
+namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
-    void on_calendarDataClicked(const QDate &date);
-    void on_addEventButton_clicked();
-    void updateEventList(const QDate &date);
-    void updateCountdown();
+    void addEvent();  // 添加事件
+    void updateEventList();  // 更新事件列表
+    void showSelectedDateEvents(const QDate &date);  // 显示选择日期的事件
+    void checkUpcomingEvents();  // 检查即将发生的事件
+    void showCountdown();  // 显示倒计时
 
 private:
     Ui::MainWindow *ui;
-    Database db;
-    Notifier notifier;
-    QTimer *countdownTimer;
-
-    void setupConnections();
-    void loadEvents(const QDate &date);
+    QCalendarWidget *calendarWidget;
+    QList<Event> events;  // 存储事件的列表
 };
 
 #endif // MAINWINDOW_H
