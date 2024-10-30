@@ -25,6 +25,34 @@
 
 
 // eventdialog.h
+//#ifndef EVENTDIALOG_H
+//#define EVENTDIALOG_H
+
+//#include <QDialog>
+//#include "event.h"
+
+//namespace Ui {
+//class EventDialog;
+//}
+
+//class EventDialog : public QDialog {
+//    Q_OBJECT
+
+//public:
+//    explicit EventDialog(QWidget *parent = nullptr);
+//    ~EventDialog();
+
+//    Event getEvent() const;
+
+//private:
+//    Ui::EventDialog *ui;
+//};
+
+//#endif // EVENTDIALOG_H
+
+
+/*=================================================*/
+
 #ifndef EVENTDIALOG_H
 #define EVENTDIALOG_H
 
@@ -41,8 +69,7 @@ class EventDialog : public QDialog {
 public:
     explicit EventDialog(QWidget *parent = nullptr);
     ~EventDialog();
-
-    Event getEvent() const;
+    Event getEvent() const;  // 获取事件信息
 
 private:
     Ui::EventDialog *ui;

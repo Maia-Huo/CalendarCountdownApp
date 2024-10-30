@@ -7,3 +7,6 @@ void Database::addEvent(const Event &event) {
 QList<Event> Database::getEvents() const {
     return events;
 }
+
+
+/*=================================================*/

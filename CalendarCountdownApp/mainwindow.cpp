@@ -118,3 +118,6 @@ void MainWindow::showCountdown() {
     Event upcomingEvent = events.first(); // 取第一个事件
     // 实现倒计时显示的逻辑
 }
+
+
+/*=================================================*/
