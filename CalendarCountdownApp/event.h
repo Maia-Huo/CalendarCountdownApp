@@ -64,6 +64,7 @@ public:
     QDateTime getDateTime() const;
     QString getCategory() const;
     QString getDescription() const;
+    QTime getRemindTime() const;
 
     // 添加 setter 方法
     void setTitle(const QString &title);
@@ -82,5 +83,5 @@ private:
 
 #endif // EVENT_H
 
-
+/*22222222222222222222222222222222222222222222222222*/
 

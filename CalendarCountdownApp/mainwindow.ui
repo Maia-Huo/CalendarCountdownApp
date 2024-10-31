@@ -1,6 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>346</width>
+    <height>352</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>简易日历倒计时应用</string>
   </property>
@@ -33,6 +42,13 @@
        <widget class="QPushButton" name="addEventButton">
         <property name="text">
          <string>添加事件</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="deleteEventButton">
+        <property name="text">
+         <string>删除事件</string>
         </property>
        </widget>
       </item>

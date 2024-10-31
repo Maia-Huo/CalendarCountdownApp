@@ -41,6 +41,7 @@
 #include <QCalendarWidget>
 #include <QList>
 #include "event.h"
+#include <QListWidgetItem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -59,6 +60,8 @@ private slots:
     void showSelectedDateEvents(const QDate &date);  // 显示选择日期的事件
     void checkUpcomingEvents();  // 检查即将发生的事件
     void showCountdown();  // 显示倒计时
+    void editEvent(QListWidgetItem *item);
+    void deleteEvent();
 
 private:
     Ui::MainWindow *ui;
@@ -70,3 +73,6 @@ private:
 
 
 /*=================================================*/
+
+
+/*22222222222222222222222222222222222222222222222222*/
