@@ -148,6 +148,11 @@ MainWindow::MainWindow(QWidget *parent)
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::checkUpcomingEvents);
     timer->start(60000); // 每分钟检查一次
+
+    // 新增的定时器，每秒更新倒计时
+    QTimer *countdownTimer = new QTimer(this);
+    connect(countdownTimer, &QTimer::timeout, this, &MainWindow::updateEventList);
+    countdownTimer->start(1000); // 每秒更新一次
 }
 
 MainWindow::~MainWindow() {
@@ -165,16 +170,43 @@ void MainWindow::addEvent() {
     }
 }
 
+
+
 void MainWindow::updateEventList() {
+    // 保存当前选中的事件的索引
+    int currentIndex = ui->eventListWidget->currentRow();
+
     ui->eventListWidget->clear();
     for (const Event &event : events) {
-            QString displayText = QString("%1 - %2 (%3)")
-                .arg(event.getTitle())
-                .arg(event.getDateTime().toString("yyyy-MM-dd hh:mm"))
-                .arg(event.getCategory());
-            ui->eventListWidget->addItem(displayText);
+        QString displayText = QString("%1 - %2 (%3)")
+            .arg(event.getTitle())
+            .arg(event.getDateTime().toString("yyyy-MM-dd hh:mm"))
+            .arg(event.getCategory());
+
+        // 计算倒计时
+        qint64 secondsToEvent = QDateTime::currentDateTime().secsTo(event.getDateTime());
+        if (secondsToEvent > 0) {
+            QString countdownText = QString("倒计时: %1").arg(QTime(0, 0).addSecs(secondsToEvent).toString("HH:mm:ss"));
+            displayText += " " + countdownText;
+        } else {
+            displayText += " (已过期)";
+        }
+
+        ui->eventListWidget->addItem(displayText);
+    }
+
+    // 如果之前有选中的项，重新设置选中状态
+    if (currentIndex >= 0 && currentIndex < ui->eventListWidget->count()) {
+        ui->eventListWidget->setCurrentRow(currentIndex);
     }
 }
+
+
+
+
+
+
+
 
 void MainWindow::showSelectedDateEvents(const QDate &date) {
     ui->eventListWidget->clear();
@@ -219,23 +251,16 @@ void MainWindow::editEvent(QListWidgetItem *item) {
     }
 }
 
+
+
 void MainWindow::deleteEvent() {
     QListWidgetItem *currentItem = ui->eventListWidget->currentItem();
     if (currentItem) {
         QString title = currentItem->text().trimmed();
         qDebug() << "Attempting to delete event:" << title;
 
-        // 打印事件列表中的所有事件
-        for (const Event &event : events) {
-            qDebug() << "Event in list:" << event.getTitle();
-        }
-
         auto it = std::remove_if(events.begin(), events.end(), [&](const Event &event) {
-            QString eventDetails = QString("%1 - %2 (%3)")
-                .arg(event.getTitle())
-                .arg(event.getDateTime().toString("yyyy-MM-dd hh:mm"))
-                .arg(event.getCategory());
-            return eventDetails.trimmed() == title;
+            return event.getTitle() == title.split(" - ").first(); // 直接比较标题，匹配时只用事件标题部分
         });
 
         if (it != events.end()) {
@@ -249,4 +274,3 @@ void MainWindow::deleteEvent() {
         QMessageBox::warning(this, "删除事件", "请选择要删除的事件。");
     }
 }
-
