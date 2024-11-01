@@ -186,7 +186,15 @@ void MainWindow::updateEventList() {
         // 计算倒计时
         qint64 secondsToEvent = QDateTime::currentDateTime().secsTo(event.getDateTime());
         if (secondsToEvent > 0) {
-            QString countdownText = QString("倒计时: %1").arg(QTime(0, 0).addSecs(secondsToEvent).toString("HH:mm:ss"));
+            // 计算小时、分钟和秒数
+            int hours = secondsToEvent / 3600;
+            int minutes = (secondsToEvent % 3600) / 60;
+            int seconds = secondsToEvent % 60;
+
+            QString countdownText = QString("倒计时: %1小时 %2分钟 %3秒")
+                .arg(hours)
+                .arg(minutes)
+                .arg(seconds);
             displayText += " " + countdownText;
         } else {
             displayText += " (已过期)";
