@@ -54,6 +54,8 @@
 #include <QString>
 #include <QDateTime>
 #include <QTime>
+#include <QVariant>
+
 
 class Event {
 public:

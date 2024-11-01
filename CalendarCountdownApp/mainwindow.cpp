@@ -231,7 +231,11 @@ void MainWindow::deleteEvent() {
         }
 
         auto it = std::remove_if(events.begin(), events.end(), [&](const Event &event) {
-            return event.getTitle().trimmed() == title;
+            QString eventDetails = QString("%1 - %2 (%3)")
+                .arg(event.getTitle())
+                .arg(event.getDateTime().toString("yyyy-MM-dd hh:mm"))
+                .arg(event.getCategory());
+            return eventDetails.trimmed() == title;
         });
 
         if (it != events.end()) {
@@ -245,3 +249,4 @@ void MainWindow::deleteEvent() {
         QMessageBox::warning(this, "删除事件", "请选择要删除的事件。");
     }
 }
+
