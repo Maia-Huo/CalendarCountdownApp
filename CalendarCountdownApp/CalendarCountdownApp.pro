@@ -28,16 +28,19 @@ SOURCES += main.cpp\
     event.cpp \
     database.cpp \
     eventdialog.cpp \
-    notifier.cpp
+    notifier.cpp \
+    countdownwindow.cpp
 
 HEADERS  += mainwindow.h \
     event.h \
     database.h \
     eventdialog.h \
-    notifier.h
+    notifier.h \
+    countdownwindow.h
 
 FORMS    += mainwindow.ui \
-    eventdialog.ui
+    eventdialog.ui \
+    countdownwindow.ui
 
 DISTFILES += \
     EventdialogForm.ui.qml \

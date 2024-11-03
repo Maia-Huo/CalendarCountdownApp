@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>346</width>
+    <width>430</width>
     <height>352</height>
    </rect>
   </property>
@@ -49,6 +49,13 @@
        <widget class="QPushButton" name="deleteEventButton">
         <property name="text">
          <string>删除事件</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="showCountdownButton">
+        <property name="text">
+         <string>最小化</string>
         </property>
        </widget>
       </item>
