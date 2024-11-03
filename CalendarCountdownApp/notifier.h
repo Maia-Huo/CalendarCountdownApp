@@ -1,28 +1,17 @@
-// utils/notifier.h
 #ifndef NOTIFIER_H
 #define NOTIFIER_H
 
-#include <QObject>
-#include <QThread>
-#include <QDateTime>
-#include "database/database.h"
+#include <QString>
 
-class Notifier : public QObject
-{
-    Q_OBJECT
+class Notifier {
 public:
-    Notifier(QObject *parent = nullptr);
-    ~Notifier();
-    void start();
-
-private:
-    QThread workerThread;
-    Database db;
-
-    void process();
-
-signals:
-    void notify(const QString &title, const QString &message);
+    static void showNotification(const QString &message);
 };
 
 #endif // NOTIFIER_H
+
+
+/*=================================================*/
+
+
+/*22222222222222222222222222222222222222222222222222*/
