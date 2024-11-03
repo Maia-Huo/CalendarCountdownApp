@@ -1,38 +1,3 @@
-//#ifndef MAINWINDOW_H
-//#define MAINWINDOW_H
-
-//#include <QMainWindow>
-//#include <QCalendarWidget>
-//#include <QTabWidget>
-//#include <QList>
-//#include "event.h"
-
-//QT_BEGIN_NAMESPACE
-//namespace Ui { class MainWindow; }
-//QT_END_NAMESPACE
-
-//class MainWindow : public QMainWindow {
-//    Q_OBJECT
-
-//public:
-//    MainWindow(QWidget *parent = nullptr);
-//    ~MainWindow();
-
-//private slots:
-//    void checkUpcomingEvents();
-
-//private:
-//    Ui::MainWindow *ui;
-//    QTabWidget *tabWidget;
-//    QCalendarWidget *calendarWidget;
-//    QList<Event> events; // 存储事件列表
-
-//    void setupCalendar();
-//    void showCountdown();
-//};
-
-//#endif // MAINWINDOW_H
-
 
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
@@ -42,6 +7,7 @@
 #include <QList>
 #include "event.h"
 #include <QListWidgetItem>
+#include <QSet>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -53,6 +19,7 @@ class MainWindow : public QMainWindow {
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
 
 private slots:
     void addEvent();  // 添加事件
@@ -67,6 +34,7 @@ private:
     Ui::MainWindow *ui;
     QCalendarWidget *calendarWidget;
     QList<Event> events;  // 存储事件的列表
+    QSet<QString> notifiedEvents; // 存储已提醒的事件标题
 };
 
 #endif // MAINWINDOW_H
