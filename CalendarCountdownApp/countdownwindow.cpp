@@ -35,5 +35,10 @@ void CountdownWindow::updateCountdown() {
 }
 
 void CountdownWindow::on_closeButton_clicked() {
-    this->close();
+    this->close(); // 关闭倒计时窗口
+
+    // 显示主窗口
+    if (parentWidget()) {
+        parentWidget()->show(); // 显示主窗口
+    }
 }
