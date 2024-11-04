@@ -5,6 +5,7 @@
 
 #include "eventdialog.h"
 #include "ui_eventdialog.h"
+#include <QDebug>
 
 EventDialog::EventDialog(QWidget *parent) :
     QDialog(parent),
@@ -42,10 +43,20 @@ void EventDialog::setTitle(const QString &title) {
     ui->titleLineEdit->setText(title);
 }
 
+//void EventDialog::setDateTime(const QDateTime &dateTime) {
+//    ui->dateEdit->setDate(dateTime.date());
+//    ui->timeEdit->setTime(dateTime.time());
+//}
+
+
+// EventDialog.cpp
 void EventDialog::setDateTime(const QDateTime &dateTime) {
     ui->dateEdit->setDate(dateTime.date());
     ui->timeEdit->setTime(dateTime.time());
 }
+
+
+
 
 void EventDialog::setCategory(const QString &category) {
     int index = ui->categoryComboBox->findText(category);
@@ -60,4 +71,9 @@ void EventDialog::setDescription(const QString &description) {
 
 void EventDialog::setRemindTime(const QTime &remindTime) {
     ui->remindTimeEdit->setTime(remindTime);
+}
+
+void EventDialog::setSelectedDate(const QDate &date)
+{
+    ui->dateEdit->setDate(date);  // 假设 ui 中有一个名为 dateEdit 的 QDateEdit 控件
 }
