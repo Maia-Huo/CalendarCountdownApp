@@ -71,19 +71,21 @@ public:
 
 
 private slots:
-    void addEvent();  // 添加事件
-    void updateEventList();  // 更新事件列表
+    void addEvent();                                 // 添加事件
+    void updateEventList();                          // 更新事件列表
     void showSelectedDateEvents(const QDate &date);  // 显示选择日期的事件
-    void checkUpcomingEvents();  // 检查即将发生的事件
-    void showCountdown();  // 显示倒计时
+    void checkUpcomingEvents();                      // 检查即将发生的事件
+    void showCountdown();                            // 显示倒计时
     void editEvent(QListWidgetItem *item);
     void deleteEvent();
 
 private:
     Ui::MainWindow *ui;
     QCalendarWidget *calendarWidget;
-    QList<Event> events;  // 存储事件的列表
+    QList<Event> events;          // 存储事件的列表
     QSet<QString> notifiedEvents; // 存储已提醒的事件标题
+
+    QDate selectedDate;
 };
 
 #endif // MAINWINDOW_H

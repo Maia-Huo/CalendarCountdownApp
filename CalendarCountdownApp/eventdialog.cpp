@@ -43,13 +43,8 @@ void EventDialog::setTitle(const QString &title) {
     ui->titleLineEdit->setText(title);
 }
 
-//void EventDialog::setDateTime(const QDateTime &dateTime) {
-//    ui->dateEdit->setDate(dateTime.date());
-//    ui->timeEdit->setTime(dateTime.time());
-//}
 
 
-// EventDialog.cpp
 void EventDialog::setDateTime(const QDateTime &dateTime) {
     ui->dateEdit->setDate(dateTime.date());
     ui->timeEdit->setTime(dateTime.time());
@@ -75,5 +70,5 @@ void EventDialog::setRemindTime(const QTime &remindTime) {
 
 void EventDialog::setSelectedDate(const QDate &date)
 {
-    ui->dateEdit->setDate(date);  // 假设 ui 中有一个名为 dateEdit 的 QDateEdit 控件
+    ui->dateEdit->setDate(date);
 }
