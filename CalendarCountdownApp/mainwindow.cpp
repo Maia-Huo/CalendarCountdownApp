@@ -98,11 +98,9 @@ void MainWindow::showSelectedDateEvents(const QDate &date) {
 }
 
 
-
-
 void MainWindow::checkUpcomingEvents() {
     for (auto it = events.begin(); it != events.end();) {
-        if (it->getDateTime() < QDateTime::currentDateTime().addSecs(60)) {
+        if (it->getDateTime() <= QDateTime::currentDateTime()) { // 只在时间到达时通知
             QString title = it->getTitle();
             if (!notifiedEvents.contains(title)) {
                 Notifier::showNotification(title + "即将到来!");
@@ -117,6 +115,7 @@ void MainWindow::checkUpcomingEvents() {
     }
     updateEventList(); // 更新事件列表
 }
+
 
 
 

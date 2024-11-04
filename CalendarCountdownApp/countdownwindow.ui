@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>CountdownWindow</class>
  <widget class="QDialog" name="CountdownWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>92</width>
+    <height>114</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>倒计时</string>
   </property>
@@ -22,4 +30,6 @@
    </item>
   </layout>
  </widget>
+ <resources/>
+ <connections/>
 </ui>

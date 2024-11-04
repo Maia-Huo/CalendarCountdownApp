@@ -21,10 +21,19 @@ private slots:
     void updateCountdown();
     void on_closeButton_clicked();
 
+
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
 private:
     Ui::CountdownWindow *ui;
     QTimer *countdownTimer;
     QDateTime eventTime;
+
+    bool isDragging;          // 标记是否正在拖动
+        QPoint dragPosition;      // 记录拖动位置
 };
 
 #endif // COUNTDOWNWINDOW_H
