@@ -58,6 +58,7 @@
 #include <QSet>
 #include "countdownwindow.h"
 #include "sqlitestorage.h"
+#include "yearcalendar.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -80,6 +81,8 @@ private slots:
     void editEvent(QListWidgetItem *item);
     void deleteEvent();
 
+    void showYear();//年视图
+
 private:
     Ui::MainWindow *ui;
     QCalendarWidget *calendarWidget;
@@ -89,6 +92,7 @@ private:
 
     QDate selectedDate;
 
+    //YearCalendar *yearCalendarWindow;  // 声明 yearCalendarWindow 指针
     SQLiteStorage *storage; // 数据库存储类
 };
 

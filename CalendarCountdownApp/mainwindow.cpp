@@ -1,4 +1,3 @@
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "sqlitestorage.h"
@@ -9,10 +8,13 @@
 #include "notifier.h"
 #include <QDebug>
 #include <QSet>
+#include "yearcalendar.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), storage(new SQLiteStorage()){
     ui->setupUi(this);
+    //将showYear函数连接到按钮
+    connect(ui->yearViewButton, &QPushButton::clicked, this, &MainWindow::showYear);
 
     connect(ui->addEventButton, &QPushButton::clicked, this, &MainWindow::addEvent);
     connect(ui->deleteEventButton, &QPushButton::clicked, this, &MainWindow::deleteEvent);
@@ -38,6 +40,16 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow() {
     delete ui;
     //delete storage; // 在析构函数中删除实例
+}
+
+void MainWindow::showYear() {//年视图
+    // 创建 YearCalendar 窗口
+    YearCalendar *yearCalendarWindow = new YearCalendar(2024, nullptr);  // 假设显示 2024 年的日历
+    yearCalendarWindow->show();  // 显示年视图窗口
+    //yearCalendarWindow->raise();
+    //yearCalendarWindow->activateWindow();
+
+    //this->hide();  // 隐藏主窗口
 }
 
 void MainWindow::addEvent() {

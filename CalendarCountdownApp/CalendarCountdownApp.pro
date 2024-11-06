@@ -30,7 +30,9 @@ SOURCES += main.cpp\
     eventdialog.cpp \
     notifier.cpp \
     countdownwindow.cpp \
-    sqlitestorage.cpp
+    sqlitestorage.cpp \
+    weekcalendar.cpp \
+    yearcalendar.cpp
 
 HEADERS  += mainwindow.h \
     event.h \
@@ -38,11 +40,15 @@ HEADERS  += mainwindow.h \
     eventdialog.h \
     notifier.h \
     countdownwindow.h \
-    sqlitestorage.h
+    sqlitestorage.h \
+    weekcalendar.h \
+    yearcalendar.h
 
 FORMS    += mainwindow.ui \
     eventdialog.ui \
-    countdownwindow.ui
+    countdownwindow.ui \
+    weekcalendar.ui \
+    yearcalendar.ui
 
 DISTFILES += \
     EventdialogForm.ui.qml \
