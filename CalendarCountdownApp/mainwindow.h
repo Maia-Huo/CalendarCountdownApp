@@ -82,6 +82,7 @@ private slots:
     void deleteEvent();
 
     void showYear();//年视图
+    void showWeek();//周视图
 
 private:
     Ui::MainWindow *ui;

@@ -9,12 +9,16 @@
 #include <QDebug>
 #include <QSet>
 #include "yearcalendar.h"
+#include "weekcalendar.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), storage(new SQLiteStorage()){
     ui->setupUi(this);
     //将showYear函数连接到按钮
     connect(ui->yearViewButton, &QPushButton::clicked, this, &MainWindow::showYear);
+
+    //将showWeek函数连接到按钮
+    connect(ui->weekViewButton, &QPushButton::clicked, this, &MainWindow::showWeek);
 
     connect(ui->addEventButton, &QPushButton::clicked, this, &MainWindow::addEvent);
     connect(ui->deleteEventButton, &QPushButton::clicked, this, &MainWindow::deleteEvent);
@@ -50,6 +54,15 @@ void MainWindow::showYear() {//年视图
     //yearCalendarWindow->activateWindow();
 
     //this->hide();  // 隐藏主窗口
+}
+
+void MainWindow::showWeek() {//周视图
+    // 创建一个 WeekCalendar 窗口，显示当前周
+    WeekCalendar *weekCalendarWindow = new WeekCalendar(nullptr);
+    weekCalendarWindow->show();  // 显示年视图窗口
+
+    // 隐藏主窗口
+    //this->hide();
 }
 
 void MainWindow::addEvent() {
