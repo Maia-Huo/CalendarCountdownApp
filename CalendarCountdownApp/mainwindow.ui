@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>530</width>
+    <height>459</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>简易日历倒计时应用</string>
   </property>
@@ -10,9 +18,85 @@
     <item>
      <layout class="QHBoxLayout" name="buttonLayout">
       <item>
-       <widget class="QLabel" name="positionLabel">
+       <widget class="QPushButton" name="findButton">
         <property name="text">
-         <string>位置</string>
+         <string>搜索</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="buttonLayout">
+      <item>
+       <widget class="QComboBox" name="comboBox">
+        <item>
+         <property name="text">
+          <string>北京</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>上海</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>广州</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>深圳</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>天津</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>杭州</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>成都</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>桂林</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="weatherButton">
+        <property name="text">
+         <string>天气</string>
         </property>
        </widget>
       </item>
@@ -20,6 +104,13 @@
        <widget class="QLabel" name="weatherLabel">
         <property name="text">
          <string>天气</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="tempLabel">
+        <property name="text">
+         <string>温度</string>
         </property>
        </widget>
       </item>
@@ -86,40 +177,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>530</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menud">
-    <property name="title">
-     <string>任务</string>
-    </property>
-    <addaction name="actionffra"/>
-    <addaction name="actioncdc"/>
-    <addaction name="actiondr"/>
-   </widget>
-   <addaction name="menud"/>
-  </widget>
-  <action name="actionffra">
-   <property name="text">
-    <string>搜索 </string>
-   </property>
-  </action>
-  <action name="actioncdc">
-   <property name="text">
-    <string>任务1</string>
-   </property>
-  </action>
-  <action name="actiondr">
-   <property name="text">
-    <string>任务2</string>
-   </property>
-  </action>
  </widget>
  <resources/>
  <connections/>

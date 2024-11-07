@@ -8,17 +8,32 @@
 #include "notifier.h"
 #include <QDebug>
 #include <QSet>
+#include <QStringList>
 #include "yearcalendar.h"
 #include "weekcalendar.h"
+#include "weatherfetcher.h"
+#include "showevents.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), storage(new SQLiteStorage()){
     ui->setupUi(this);
+
+    // 初始化天气数据获取器
+    weatherFetcher = new WeatherFetcher(this);
+    // 连接按钮点击信号到槽函数 onWeatherButtonClicked
+    connect(ui->weatherButton, &QPushButton::clicked, this, &MainWindow::onWeatherButtonClicked);
+    // 连接 WeatherFetcher 的 weatherFetched 信号到槽函数 updateWeatherDisplay
+    connect(weatherFetcher, &WeatherFetcher::weatherFetched, this, &MainWindow::updateWeatherDisplay);
+
     //将showYear函数连接到按钮
     connect(ui->yearViewButton, &QPushButton::clicked, this, &MainWindow::showYear);
 
     //将showWeek函数连接到按钮
     connect(ui->weekViewButton, &QPushButton::clicked, this, &MainWindow::showWeek);
+
+    //将showEvents函数连接到按钮
+    connect(ui->findButton, &QPushButton::clicked, this, &MainWindow::showEvents);
+    //connect(ui->actionAllEvents, &QAction::triggered, this, &MainWindow::showEvents);
 
     connect(ui->addEventButton, &QPushButton::clicked, this, &MainWindow::addEvent);
     connect(ui->deleteEventButton, &QPushButton::clicked, this, &MainWindow::deleteEvent);
@@ -46,12 +61,49 @@ MainWindow::~MainWindow() {
     //delete storage; // 在析构函数中删除实例
 }
 
+
+//天气
+// 按钮点击槽函数，用于发起天气数据请求
+void MainWindow::onWeatherButtonClicked() {
+    // 清空之前显示的内容
+    ui->weatherLabel->clear();
+    ui->tempLabel->clear();
+    // 获取用户选择的城市
+    QString city = ui->comboBox->currentText().trimmed();  // 从下拉菜单中获取城市名称
+
+    if(city == "北京"){
+        weatherFetcher->fetchWeather("Beijing");
+    }else if(city == "上海"){
+        weatherFetcher->fetchWeather("Shanghai");
+    }else if(city == "广州"){
+        weatherFetcher->fetchWeather("Guangzhou");
+    }else if(city == "深圳"){
+        weatherFetcher->fetchWeather("Shenzhen");
+    }else if(city == "天津"){
+        weatherFetcher->fetchWeather("Tianjin");
+    }else if(city == "杭州"){
+        weatherFetcher->fetchWeather("Hangzhou");
+    }else if(city == "成都"){
+        weatherFetcher->fetchWeather("Chengdu");
+    }else if(city == "桂林"){
+        weatherFetcher->fetchWeather("Guilin");
+    }
+}
+
+// 更新 UI 中的天气信息显示
+void MainWindow::updateWeatherDisplay(const QString &weather, double temp, const QString &location) {
+    QString weatherInfo = QString("天气: %2")
+                              .arg(weather);
+    ui->weatherLabel->setText(weatherInfo);  // 将天气信息更新到标签
+    QString tempInfo = QString("温度: %3 °C")
+                           .arg(temp);
+    ui->tempLabel->setText(tempInfo);  // 将温度信息更新到标签
+}
+
 void MainWindow::showYear() {//年视图
     // 创建 YearCalendar 窗口
     YearCalendar *yearCalendarWindow = new YearCalendar(2024, nullptr);  // 假设显示 2024 年的日历
     yearCalendarWindow->show();  // 显示年视图窗口
-    //yearCalendarWindow->raise();
-    //yearCalendarWindow->activateWindow();
 
     //this->hide();  // 隐藏主窗口
 }
@@ -60,6 +112,15 @@ void MainWindow::showWeek() {//周视图
     // 创建一个 WeekCalendar 窗口，显示当前周
     WeekCalendar *weekCalendarWindow = new WeekCalendar(nullptr);
     weekCalendarWindow->show();  // 显示年视图窗口
+
+    // 隐藏主窗口
+    //this->hide();
+}
+
+void MainWindow::showEvents() {//显示所有事件
+    // 创建一个窗口，显示事件
+    ShowEvents *ShowEventsWindow = new ShowEvents(nullptr);
+    ShowEventsWindow->show();  // 显示窗口
 
     // 隐藏主窗口
     //this->hide();
@@ -201,25 +262,6 @@ void MainWindow::editEvent(QListWidgetItem *item) {
         updateEventList();
     }
 }
-
-/*
-void MainWindow::deleteEvent(QListWidgetItem *item) {
-    // 获取当前选中的事件项
-    int index = ui->eventListWidget->row(item);
-
-    if (index >= 0 && index < events.size()) {
-        const Event &event = events[index];  // 获取当前选中事件
-        QString eventTitle = event.getTitle();  // 获取标题
-
-        // 调用 SQLiteStorage 类的 deleteEvent 方法删除数据库中的事件
-        storage->deleteEvent(eventTitle);  // 使用提取的标题部分进行删除
-
-        events.removeAt(index);  // 从本地事件列表中删除
-
-    } else {
-        QMessageBox::warning(this, "删除事件", "请选择要删除的事件。");
-    }
-}*/
 
 void MainWindow::deleteEvent() {
     // 获取当前选中的事件项

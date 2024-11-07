@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,7 +30,9 @@ SOURCES += main.cpp\
     eventdialog.cpp \
     notifier.cpp \
     countdownwindow.cpp \
+    showevents.cpp \
     sqlitestorage.cpp \
+    weatherfetcher.cpp \
     weekcalendar.cpp \
     yearcalendar.cpp
 
@@ -40,13 +42,16 @@ HEADERS  += mainwindow.h \
     eventdialog.h \
     notifier.h \
     countdownwindow.h \
+    showevents.h \
     sqlitestorage.h \
+    weatherfetcher.h \
     weekcalendar.h \
     yearcalendar.h
 
 FORMS    += mainwindow.ui \
     eventdialog.ui \
     countdownwindow.ui \
+    showevents.ui \
     weekcalendar.ui \
     yearcalendar.ui
 

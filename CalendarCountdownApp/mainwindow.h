@@ -59,6 +59,10 @@
 #include "countdownwindow.h"
 #include "sqlitestorage.h"
 #include "yearcalendar.h"
+#include "weatherfetcher.h"
+#include "showevents.h"
+#include <QLabel>
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -71,7 +75,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-
 private slots:
     void addEvent();                                 // 添加事件
     void updateEventList();                          // 更新事件列表
@@ -83,6 +86,10 @@ private slots:
 
     void showYear();//年视图
     void showWeek();//周视图
+    void showEvents();//显示所有事件
+
+    void onWeatherButtonClicked();  // 按钮点击获取天气信息
+    void updateWeatherDisplay(const QString &weather, double temp, const QString &location);
 
 private:
     Ui::MainWindow *ui;
@@ -95,6 +102,8 @@ private:
 
     //YearCalendar *yearCalendarWindow;  // 声明 yearCalendarWindow 指针
     SQLiteStorage *storage; // 数据库存储类
+
+    WeatherFetcher *weatherFetcher;  // 用于获取天气数据的对象
 };
 
 #endif // MAINWINDOW_H
