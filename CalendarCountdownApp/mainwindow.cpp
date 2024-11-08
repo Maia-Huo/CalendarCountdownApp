@@ -15,11 +15,12 @@
 #include <QStringList>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), storage(new SQLiteStorage()){
+    : QMainWindow(parent), ui(new Ui::MainWindow), storage(new SQLiteStorage()),
+      weatherFetcher(new WeatherFetcher()){
     ui->setupUi(this);
 
     // 初始化天气数据获取器
-    weatherFetcher = new WeatherFetcher(this);
+    //weatherFetcher = new WeatherFetcher(this);
     // 连接按钮点击信号到槽函数 onWeatherButtonClicked
     connect(ui->weatherButton, &QPushButton::clicked, this, &MainWindow::onWeatherButtonClicked);
     // 连接 WeatherFetcher 的 weatherFetched 信号到槽函数 updateWeatherDisplay

@@ -8,7 +8,9 @@
 
 WeatherFetcher::WeatherFetcher(QObject *parent)
     : QObject(parent) {
+    //在构造函数中进行信号连接，这样只需连接一次
     manager = new QNetworkAccessManager(this);
+    connect(manager, &QNetworkAccessManager::finished, this, &WeatherFetcher::onWeatherDataReceived);
 }
 
 void WeatherFetcher::fetchWeather(const QString &city)
@@ -21,7 +23,6 @@ void WeatherFetcher::fetchWeather(const QString &city)
     url.setQuery(query);
 
     QNetworkRequest request(url);
-    connect(manager, &QNetworkAccessManager::finished, this, &WeatherFetcher::onWeatherDataReceived);
     manager->get(request);
 }
 
@@ -48,6 +49,7 @@ void WeatherFetcher::onWeatherDataReceived(QNetworkReply *reply) {
 QString WeatherFetcher::translateWeatherDescription(const QString &englishDescription) {
     static QMap<QString, QString> weatherTranslations = {
         {"clear sky", "晴天"},
+        {"overcast clouds", "阴天"},
         {"few clouds", "少云"},
         {"scattered clouds", "散云"},
         {"broken clouds", "多云"},
