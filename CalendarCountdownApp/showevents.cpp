@@ -1,7 +1,7 @@
 #include "showevents.h"
-#include "ui_showevents.h"  // 确保文件名和路径正确
-#include <QStringList>
+#include "ui_showevents.h"
 #include "sqlitestorage.h"
+#include <QStringList>
 
 ShowEvents::ShowEvents(QWidget *parent)
     : QWidget(parent), ui(new Ui::ShowEvents), storage(new SQLiteStorage()){

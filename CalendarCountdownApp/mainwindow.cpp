@@ -1,18 +1,18 @@
 #include "mainwindow.h"
+#include "notifier.h"
+#include "eventdialog.h"
 #include "ui_mainwindow.h"
 #include "sqlitestorage.h"
-#include <QTimer>
-#include <QMessageBox>
-#include <QDateTime>
-#include "eventdialog.h"
-#include "notifier.h"
-#include <QDebug>
-#include <QSet>
-#include <QStringList>
 #include "yearcalendar.h"
 #include "weekcalendar.h"
 #include "weatherfetcher.h"
 #include "showevents.h"
+#include <QSet>
+#include <QTimer>
+#include <QDebug>
+#include <QDateTime>
+#include <QMessageBox>
+#include <QStringList>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), storage(new SQLiteStorage()){

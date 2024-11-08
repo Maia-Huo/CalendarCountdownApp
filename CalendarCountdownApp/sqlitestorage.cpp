@@ -1,12 +1,12 @@
-#include "sqlitestorage.h"
 #include "event.h"
+#include "sqlitestorage.h"
+#include <QDebug>
 #include <QSqlQuery>
 #include <QSqlError>
-#include <QDebug>
 
 SQLiteStorage::SQLiteStorage() {
     db = QSqlDatabase::addDatabase("QSQLITE");//添加一个 SQLite 数据库驱动
-    db.setDatabaseName("data.db");//设置数据库文件名为events.db，在当前工作目录中创建或打开该文件
+    db.setDatabaseName("data.db");//设置数据库文件名为data.db，在当前工作目录中创建或打开该文件
 
     if (!db.open()) {//尝试打开数据库
         qDebug() << "Error opening database:" << db.lastError().text();

@@ -1,5 +1,5 @@
 #include "yearcalendar.h"
-#include "ui_yearcalendar.h"  // 自动生成的 UI 头文件
+#include "ui_yearcalendar.h"
 
 YearCalendar::YearCalendar(int year, QWidget *parent)
     : QWidget(parent), ui(new Ui::YearCalendar) {

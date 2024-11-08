@@ -1,9 +1,9 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
-#include <QString>
-#include <QList>
 #include "event.h"
+#include <QList>
+#include <QString>
 
 class Database {
 public:
@@ -15,8 +15,3 @@ private:
 };
 
 #endif // DATABASE_H
-
-
-/*=================================================*/
-
-/*22222222222222222222222222222222222222222222222222*/

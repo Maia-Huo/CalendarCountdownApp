@@ -1,10 +1,10 @@
 #ifndef WEEKCALENDAR_H
 #define WEEKCALENDAR_H
 
+#include "ui_weekcalendar.h"
+#include <QDate>
 #include <QWidget>
 #include <QCalendarWidget>
-#include <QDate>
-#include "ui_weekcalendar.h"
 
 namespace Ui {
 class WeekCalendar;

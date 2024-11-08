@@ -1,8 +1,3 @@
-
-
-/*22222222222222222222222222222222222222222222222222*/
-
-
 #include "eventdialog.h"
 #include "ui_eventdialog.h"
 #include <QDebug>
@@ -53,15 +48,10 @@ void EventDialog::setTitle(const QString &title) {
     ui->titleLineEdit->setText(title);
 }
 
-
-
 void EventDialog::setDateTime(const QDateTime &dateTime) {
     ui->dateEdit->setDate(dateTime.date());
     ui->timeEdit->setTime(dateTime.time());
 }
-
-
-
 
 void EventDialog::setCategory(const QString &category) {
     int index = ui->categoryComboBox->findText(category);
@@ -78,7 +68,6 @@ void EventDialog::setRemindTime(const QTime &remindTime) {
     ui->remindTimeEdit->setTime(remindTime);
 }
 
-void EventDialog::setSelectedDate(const QDate &date)
-{
+void EventDialog::setSelectedDate(const QDate &date){
     ui->dateEdit->setDate(date);
 }

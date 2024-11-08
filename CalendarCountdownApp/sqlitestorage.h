@@ -2,7 +2,6 @@
 #define SQLITESTORAGE_H
 
 #include "event.h"
-
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QVector>

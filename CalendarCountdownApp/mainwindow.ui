@@ -18,13 +18,6 @@
     <item>
      <layout class="QHBoxLayout" name="buttonLayout">
       <item>
-       <widget class="QPushButton" name="findButton">
-        <property name="text">
-         <string>搜索</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="label">
         <property name="text">
          <string/>
@@ -157,6 +150,13 @@
        <widget class="QPushButton" name="showCountdownButton">
         <property name="text">
          <string>最小化</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="findButton">
+        <property name="text">
+         <string>搜索</string>
         </property>
        </widget>
       </item>

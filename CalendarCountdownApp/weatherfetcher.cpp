@@ -1,11 +1,10 @@
 #include "weatherfetcher.h"
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QJsonValue>
 #include <QDebug>
 #include <QUrlQuery>
-
+#include <QJsonArray>
+#include <QJsonValue>
+#include <QJsonObject>
+#include <QJsonDocument>
 
 WeatherFetcher::WeatherFetcher(QObject *parent)
     : QObject(parent) {

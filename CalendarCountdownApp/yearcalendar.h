@@ -1,9 +1,9 @@
 #ifndef YEARCALENDAR_H
 #define YEARCALENDAR_H
 
+#include <QDate>
 #include <QWidget>
 #include <QCalendarWidget>
-#include <QDate>
 
 namespace Ui {
 class YearCalendar;
