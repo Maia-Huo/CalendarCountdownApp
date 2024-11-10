@@ -19,8 +19,6 @@ MainWindow::MainWindow(QWidget *parent)
       weatherFetcher(new WeatherFetcher()){
     ui->setupUi(this);
 
-    // 初始化天气数据获取器
-    //weatherFetcher = new WeatherFetcher(this);
     // 连接按钮点击信号到槽函数 onWeatherButtonClicked
     connect(ui->weatherButton, &QPushButton::clicked, this, &MainWindow::onWeatherButtonClicked);
     // 连接 WeatherFetcher 的 weatherFetched 信号到槽函数 updateWeatherDisplay
@@ -33,8 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->weekViewButton, &QPushButton::clicked, this, &MainWindow::showWeek);
 
     //将showEvents函数连接到按钮
-    connect(ui->findButton, &QPushButton::clicked, this, &MainWindow::showEvents);
-    //connect(ui->actionAllEvents, &QAction::triggered, this, &MainWindow::showEvents);
+    connect(ui->searchAction, &QAction::triggered, this, &MainWindow::showEvents);
 
     connect(ui->addEventButton, &QPushButton::clicked, this, &MainWindow::addEvent);
     connect(ui->deleteEventButton, &QPushButton::clicked, this, &MainWindow::deleteEvent);
@@ -92,7 +89,7 @@ void MainWindow::onWeatherButtonClicked() {
 }
 
 // 更新 UI 中的天气信息显示
-void MainWindow::updateWeatherDisplay(const QString &weather, double temp, const QString &location) {
+void MainWindow::updateWeatherDisplay(const QString &weather, double temp) {
     QString weatherInfo = QString("天气: %2")
                               .arg(weather);
     ui->weatherLabel->setText(weatherInfo);  // 将天气信息更新到标签
@@ -114,8 +111,7 @@ void MainWindow::showWeek() {//周视图
     WeekCalendar *weekCalendarWindow = new WeekCalendar(nullptr);
     weekCalendarWindow->show();  // 显示年视图窗口
 
-    // 隐藏主窗口
-    //this->hide();
+    //this->hide();// 隐藏主窗口
 }
 
 void MainWindow::showEvents() {//显示所有事件
@@ -147,6 +143,7 @@ void MainWindow::addEvent() {
 }
 
 void MainWindow::updateEventList() {
+    QDate selectedDate = ui->calendarWidget->selectedDate(); //获取选中日期
     // 保存当前选中的事件的索引
     int currentIndex = ui->eventListWidget->currentRow();
     // 清空当前事件列表
@@ -214,20 +211,22 @@ void MainWindow::checkUpcomingEvents() {
     updateEventList(); // 更新事件列表
 }
 
-void MainWindow::showCountdown() {
-    if (events.isEmpty()) return;
+void MainWindow::showCountdown() {// 找到最近的事件
+    // 从数据库获取所有事件
+    QVector<Event> allEvents = storage->getAllEvents(); // 从数据库读取事件
+    if (allEvents.isEmpty()) return;
 
-    // 找到最近的事件
-    Event closestEvent = events.first();
-    for (const Event &event : events) {
+    Event closestEvent = allEvents.first();
+    // 过滤和显示选中日期的事件
+    for (const Event &event : allEvents) {
         if (event.getDateTime() < closestEvent.getDateTime() &&
-            event.getDateTime() > QDateTime::currentDateTime()) {
+            event.getDateTime() > QDateTime::currentDateTime()) { // 仅显示选中日期的事件
             closestEvent = event;
         }
     }
 
     CountdownWindow *countdownWindow = new CountdownWindow(this);
-    countdownWindow->startCountdown(closestEvent.getDateTime());
+    countdownWindow->startCountdown(closestEvent);
     countdownWindow->show();
 
     this->hide(); // 隐藏主窗口

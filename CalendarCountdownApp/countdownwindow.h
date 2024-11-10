@@ -1,8 +1,10 @@
 #ifndef COUNTDOWNWINDOW_H
 #define COUNTDOWNWINDOW_H
 
-#include <QDialog>
+#include "event.h"
 #include <QTimer>
+#include <QDialog>
+#include <QString>
 #include <QDateTime>
 
 namespace Ui {
@@ -15,12 +17,11 @@ class CountdownWindow : public QDialog {
 public:
     explicit CountdownWindow(QWidget *parent = nullptr);
     ~CountdownWindow();
-    void startCountdown(const QDateTime &eventTime);
+    void startCountdown(const Event &event);
 
 private slots:
     void updateCountdown();
     void on_closeButton_clicked();
-
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

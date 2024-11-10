@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>92</width>
-    <height>114</height>
+    <width>292</width>
+    <height>233</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,14 @@
    <item>
     <widget class="QLabel" name="countdownLabel">
      <property name="text">
-      <string>倒计时: 00:00:00</string>
+      <string>       倒计时: 00:00:00</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="eventLabel">
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </item>

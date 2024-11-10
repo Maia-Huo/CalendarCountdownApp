@@ -1,10 +1,10 @@
 #ifndef EVENTWINDOW_H
 #define EVENTWINDOW_H
 
+#include "sqlitestorage.h"
 #include <QWidget>
 #include <QListView>
 #include <QStringListModel>
-#include "sqlitestorage.h"
 
 namespace Ui {
 class ShowEvents;

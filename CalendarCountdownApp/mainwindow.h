@@ -40,7 +40,7 @@ private slots:
     void showEvents();//显示所有事件
 
     void onWeatherButtonClicked();  // 按钮点击获取天气信息
-    void updateWeatherDisplay(const QString &weather, double temp, const QString &location);
+    void updateWeatherDisplay(const QString &weather, double temp);
 
 private:
     Ui::MainWindow *ui;
@@ -51,7 +51,6 @@ private:
 
     QDate selectedDate;
 
-    //YearCalendar *yearCalendarWindow;  // 声明 yearCalendarWindow 指针
     SQLiteStorage *storage; // 数据库存储类
 
     WeatherFetcher *weatherFetcher;  // 用于获取天气数据的对象

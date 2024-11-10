@@ -19,7 +19,7 @@ CountdownWindow::CountdownWindow(QWidget *parent) :
         }
         #countdownLabel {
             color: #FF6347;
-            font-size: 16px;
+            font-size: 25px;
             font-weight: bold;
             padding: 10px;
         }
@@ -28,7 +28,7 @@ CountdownWindow::CountdownWindow(QWidget *parent) :
             color: white;
             border-radius: 5px;
             padding: 5px 10px;
-            font-size: 14px;
+            font-size: 20px;
         }
         #closeButton:hover {
             background-color: #FF4500;
@@ -44,14 +44,22 @@ CountdownWindow::~CountdownWindow() {
     delete ui;
 }
 
-void CountdownWindow::startCountdown(const QDateTime &eventTime) {
-    this->eventTime = eventTime;
+void CountdownWindow::startCountdown(const Event &event) {
+    this->eventTime = event.getDateTime();
     countdownTimer->start(1000);
+
+    QString displayText = QString("时间: %1 \n标题: %2 \n描述: %3")
+        .arg(event.getDateTime().toString("yyyy-MM-dd hh:mm"))
+        .arg(event.getTitle())
+        .arg(event.getDescription());
+    ui->eventLabel->setText(displayText);
+
     updateCountdown();
 }
 
 void CountdownWindow::updateCountdown() {
     qint64 secondsToEvent = QDateTime::currentDateTime().secsTo(eventTime);
+
     if (secondsToEvent > 0) {
         int hours = secondsToEvent / 3600;
         int minutes = (secondsToEvent % 3600) / 60;
