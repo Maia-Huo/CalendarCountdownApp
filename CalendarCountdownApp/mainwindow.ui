@@ -24,6 +24,7 @@
           <string>功能</string>
          </property>
          <addaction name="searchAction"/>
+         <addaction name="deleteAction"/>
         </widget>
         <addaction name="menuFile"/>
        </widget>
@@ -184,6 +185,11 @@
   <action name="searchAction">
    <property name="text">
     <string>检索   </string>
+   </property>
+  </action>
+  <action name="deleteAction">
+   <property name="text">
+    <string>删除已完成事件</string>
    </property>
   </action>
  </widget>

@@ -32,6 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     //将showEvents函数连接到按钮
     connect(ui->searchAction, &QAction::triggered, this, &MainWindow::showEvents);
+    //将deleteEvents函数连接到按钮
+    connect(ui->deleteAction, &QAction::triggered, this, &MainWindow::deleteCompletedEvents);
 
     connect(ui->addEventButton, &QPushButton::clicked, this, &MainWindow::addEvent);
     connect(ui->deleteEventButton, &QPushButton::clicked, this, &MainWindow::deleteEvent);
@@ -46,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::checkUpcomingEvents);
-    timer->start(1000);
+    timer->start(1000);// 每秒检查一次
 
     // 新增的定时器，每秒更新倒计时
     QTimer *countdownTimer = new QTimer(this);
@@ -193,37 +195,56 @@ void MainWindow::showSelectedDateEvents(const QDate &date) {
     updateEventList(); // 更新事件列表
 }
 
-void MainWindow::checkUpcomingEvents() {
-    for (auto it = events.begin(); it != events.end();) {
-        if (it->getDateTime() <= QDateTime::currentDateTime()) { // 只在时间到达时通知
-            QString title = it->getTitle();
-            if (!notifiedEvents.contains(title)) {
-                Notifier::showNotification(title + "即将到来!");
+void MainWindow::checkUpcomingEvents() {//提前通知用户即将发生的事件
+    // 从数据库获取所有事件
+    QVector<Event> allEvents = storage->getAllEvents(); // 从数据库读取事件
+    // 获取当前日期和时间
+    QDateTime currentTime = QDateTime::currentDateTime();
+
+    for (const Event &event : allEvents) {
+        if (event.getDateTime() > currentTime && event.getDateTime() <= currentTime.addSecs(600)) { // 只在时间到达时通知
+            QString title = event.getTitle();
+            if (!notifiedEvents.contains(title)) { //未提醒的事件
+                // 在未来10分钟内发生的事件
+                Notifier::showNotification("事件：" + title + "\n还有十分钟到来!");
                 notifiedEvents.insert(title); // 标记为已提醒
-                it = events.erase(it); // 删除事件
-            } else {
-                ++it; // 如果已经提醒过，继续下一个事件
             }
-        } else {
-            ++it; // 继续下一个事件
         }
     }
+
     updateEventList(); // 更新事件列表
 }
 
-void MainWindow::showCountdown() {// 找到最近的事件
+void MainWindow::showCountdown() {// 找到最近的事件，缩小化倒计时
     // 从数据库获取所有事件
     QVector<Event> allEvents = storage->getAllEvents(); // 从数据库读取事件
-    if (allEvents.isEmpty()) return;
+    if (allEvents.isEmpty()){
+        Notifier::showNotification("未添加事件！");
+        return;
+    }
 
-    Event closestEvent = allEvents.first();
-    // 过滤和显示选中日期的事件
+    // 只考虑未来的事件
+    QVector<Event> futureEvents;
+    QDateTime currentTime = QDateTime::currentDateTime();
     for (const Event &event : allEvents) {
-        if (event.getDateTime() < closestEvent.getDateTime() &&
-            event.getDateTime() > QDateTime::currentDateTime()) { // 仅显示选中日期的事件
-            closestEvent = event;
+        if (event.getDateTime() > currentTime) {
+            futureEvents.append(event);
         }
     }
+
+    if (futureEvents.isEmpty()){
+        Notifier::showNotification("无最近未处理事件！");
+        return;
+    }
+
+    // 按时间升序排序，确保最近的事件排在最前面
+    std::sort(futureEvents.begin(), futureEvents.end(),
+              [](const Event &a, const Event &b) {
+        return a.getDateTime() < b.getDateTime();
+    });
+
+    // 获取最接近的事件
+    Event closestEvent = futureEvents.first();
 
     CountdownWindow *countdownWindow = new CountdownWindow(this);
     countdownWindow->startCountdown(closestEvent);
@@ -285,4 +306,19 @@ void MainWindow::deleteEvent() {
     }
 }
 
+void MainWindow::deleteCompletedEvents() {
+    // 从数据库获取所有事件
+    QVector<Event> allEvents = storage->getAllEvents(); // 从数据库读取事件
+    // 获取当前日期和时间
+    QDateTime currentTime = QDateTime::currentDateTime();
 
+    for (const Event &event : allEvents) {
+        if (event.getDateTime() < currentTime) {
+            QString eventTitle = event.getTitle();
+            // 调用 SQLiteStorage 类的 deleteEvent 方法删除数据库中的事件
+            storage->deleteEvent(eventTitle);  // 使用提取的标题部分进行删除
+        }
+    }
+    // 刷新事件列表
+    updateEventList();
+}

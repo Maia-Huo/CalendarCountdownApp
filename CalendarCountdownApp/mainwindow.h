@@ -34,6 +34,7 @@ private slots:
     void showCountdown();                            // 显示倒计时
     void editEvent(QListWidgetItem *item);
     void deleteEvent();
+    void deleteCompletedEvents();
 
     void showYear();//年视图
     void showWeek();//周视图

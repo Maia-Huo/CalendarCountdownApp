@@ -14,9 +14,10 @@ SQLiteStorage::SQLiteStorage() {
 
     // 创建表
     //如果表不存在，则创建一个新的表
+    //"title TEXT NOT NULL, "
     QSqlQuery query;
     query.exec("CREATE TABLE IF NOT EXISTS events ("
-                "title TEXT NOT NULL, "
+                "title TEXT PRIMARY KEY, "
                 "dateTime TEXT NOT NULL, "
                 "category TEXT, "
                 "description TEXT)");
