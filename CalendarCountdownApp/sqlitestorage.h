@@ -17,7 +17,9 @@ public:
     ~SQLiteStorage();
 
     // 添加事件
-    void addEvent(const QString &title, const QDateTime &dateTime, const QString &category, const QString &description);
+    void addEvent(const QString &title, const QDateTime &dateTime,
+                  const QString &category, const QString &description,
+                  const QTime &remindTime);
     QVector<Event> getAllEvents();            //从数据库获取所有事件
     void deleteEvent(const QString &title);   //删除日历事件
     void updateEvent(const Event &event);     //编辑日历事件

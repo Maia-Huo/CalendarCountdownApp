@@ -8,6 +8,7 @@
 #include "weatherfetcher.h"
 #include "showevents.h"
 #include <QSet>
+#include <QIcon>
 #include <QTimer>
 #include <QDebug>
 #include <QDateTime>
@@ -19,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
       weatherFetcher(new WeatherFetcher()){
     ui->setupUi(this);
 
+    setWindowIcon(QIcon(":/icons/picture.jpg"));// 设置窗口图标
     // 连接按钮点击信号到槽函数 onWeatherButtonClicked
     connect(ui->weatherButton, &QPushButton::clicked, this, &MainWindow::onWeatherButtonClicked);
     // 连接 WeatherFetcher 的 weatherFetched 信号到槽函数 updateWeatherDisplay
@@ -58,7 +60,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() {
     delete ui;
-    //delete storage; // 在析构函数中删除实例
+    delete storage; // 在析构函数中删除实例
+    delete weatherFetcher;
 }
 
 
@@ -133,13 +136,13 @@ void MainWindow::addEvent() {
     if (dialog.exec() == QDialog::Accepted) {
         Event newEvent = dialog.getEvent();
 
-        //events.append(newEvent);//添加到events列表中
-
-        showSelectedDateEvents(selectedDate);  // 更新事件列表，仅显示当前选中日期的事件
+        updateEventList(); // 更新事件列表
+        //showSelectedDateEvents(selectedDate);  // 更新事件列表，仅显示当前选中日期的事件
 
         // 将新事件存储到数据库中
         storage->addEvent(newEvent.getTitle(), newEvent.getDateTime(),
-                         newEvent.getCategory(), newEvent.getDescription());
+                         newEvent.getCategory(), newEvent.getDescription(),
+                         newEvent.getRemindTime());
     }
     updateEventList();
 }
@@ -153,6 +156,8 @@ void MainWindow::updateEventList() {
 
     // 从数据库获取所有事件
     QVector<Event> allEvents = storage->getAllEvents(); // 从数据库读取事件
+
+    //events.clear();
 
     // 过滤和显示选中日期的事件
     for (const Event &event : allEvents) {
@@ -192,6 +197,15 @@ void MainWindow::updateEventList() {
 
 void MainWindow::showSelectedDateEvents(const QDate &date) {
     selectedDate = date; // 更新当前选中的日期
+    events.clear();
+    // 从数据库获取所有事件
+    QVector<Event> allEvents = storage->getAllEvents(); // 从数据库读取事件
+    // 过滤和显示选中日期的事件
+    for (const Event &event : allEvents) {
+        if (event.getDateTime().date() == selectedDate) { // 仅显示选中日期的事件
+            events.append(event);//选中日期的事件添加到events列表中
+         }
+    }
     updateEventList(); // 更新事件列表
 }
 
@@ -202,11 +216,34 @@ void MainWindow::checkUpcomingEvents() {//提前通知用户即将发生的事�
     QDateTime currentTime = QDateTime::currentDateTime();
 
     for (const Event &event : allEvents) {
-        if (event.getDateTime() > currentTime && event.getDateTime() <= currentTime.addSecs(600)) { // 只在时间到达时通知
+        // 获取事件的提醒时间 (remindTime) 和事件时间 (dateTime)
+        QTime remindTime = event.getRemindTime();
+
+        qint64 secondsToEvent = QDateTime::currentDateTime().secsTo(event.getDateTime());
+        int hours, minutes;
+        QString hoursString,minutesString;
+        if (secondsToEvent > 0) {
+            hours = secondsToEvent / 3600;
+            hoursString = QString::number(hours);  // 将 hours 转换为 QString
+            minutes = (secondsToEvent % 3600) / 60;
+            minutesString = QString::number(minutes);  // 将 hours 转换为 QString
+        }
+
+        // 如果 remindTime 为 00:00，则默认提前 10 分钟提醒
+        if (remindTime == QTime(0, 0) && event.getDateTime() > currentTime && event.getDateTime() <= currentTime.addSecs(600)) {
             QString title = event.getTitle();
             if (!notifiedEvents.contains(title)) { //未提醒的事件
                 // 在未来10分钟内发生的事件
-                Notifier::showNotification("事件：" + title + "\n还有十分钟到来!");
+                Notifier::showNotification("事件：" + title + "\n还有 " + hoursString + "小时" + minutesString + "分钟 到来！");
+                notifiedEvents.insert(title); // 标记为已提醒
+            }
+        } else if(remindTime != QTime(0, 0) && event.getDateTime() > currentTime &&
+                  event.getDateTime() <=
+                  currentTime.addSecs(remindTime.hour() * 3600 + remindTime.minute() * 60)){
+            QString title = event.getTitle();
+            if (!notifiedEvents.contains(title)) { //未提醒的事件
+                // 在未来10分钟内发生的事件
+                Notifier::showNotification("事件：" + title + "\n还有 " + hoursString + "小时" + minutesString + "分钟 到来！");
                 notifiedEvents.insert(title); // 标记为已提醒
             }
         }
@@ -268,16 +305,22 @@ void MainWindow::editEvent(QListWidgetItem *item) {
     dialog.setDateTime(event.getDateTime());
     dialog.setCategory(event.getCategory());
     dialog.setDescription(event.getDescription());
+    dialog.setRemindTime(event.getRemindTime());
 
     // 如果用户确认修改
     if (dialog.exec() == QDialog::Accepted) {
         Event updatedEvent = dialog.getNewEvent(); // 获取更新后的事件
 
+        // 比较更新前后的 remindTime 是否相同
+        if (notifiedEvents.contains(updatedEvent.getTitle()) && event.getRemindTime() != updatedEvent.getRemindTime()) {
+            notifiedEvents.remove(updatedEvent.getTitle());  // 删除已存在的记录
+        }
+
         // 更新本地事件列表
         events[index] = updatedEvent;
 
         // 更新数据库中的事件
-        storage->updateEvent(updatedEvent);  // 假设SQLiteStorage类中有updateEvent方法
+        storage->updateEvent(updatedEvent);  // SQLiteStorage类中有updateEvent方法
 
         // 刷新事件列表
         updateEventList();

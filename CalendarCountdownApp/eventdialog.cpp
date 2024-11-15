@@ -26,10 +26,7 @@ Event EventDialog::getEvent() const {
     event.setDateTime(QDateTime(ui->dateEdit->date(), ui->timeEdit->time()));
     event.setCategory(ui->categoryComboBox->currentText());
     event.setDescription(ui->descriptionTextEdit->toPlainText());
-
-    // 处理提醒时间
-    QTime remindTime = ui->remindTimeEdit->time();
-    event.setRemindTime(remindTime); // 假设 Event 类有 setRemindTime 方法
+    event.setRemindTime(ui->remindTimeEdit->time());// 处理提醒时间
 
     return event;
 }
@@ -40,6 +37,7 @@ Event EventDialog::getNewEvent() const {
     event.setDateTime(QDateTime(ui->dateEdit->date(), ui->timeEdit->time()));
     event.setCategory(ui->categoryComboBox->currentText());
     event.setDescription(ui->descriptionTextEdit->toPlainText());
+    event.setRemindTime(ui->remindTimeEdit->time());
 
     return event;
 }

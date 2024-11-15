@@ -1,7 +1,15 @@
-<!-- eventdialog.ui -->
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>EventDialog</class>
  <widget class="QDialog" name="EventDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>334</width>
+    <height>381</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>添加/编辑事件</string>
   </property>

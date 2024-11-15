@@ -16,6 +16,7 @@ WeekCalendar::WeekCalendar(QWidget *parent) :
 
 WeekCalendar::~WeekCalendar() {
     delete ui;
+    delete storage;
 }
 
 void WeekCalendar::initializeCalendar() {
@@ -71,7 +72,8 @@ void WeekCalendar::displaySelectEvents(int number,const QDate &selectedDate) {
     if(eventCount > 0 && textBrowser) {
         for(int i = 0;i < eventCount;i++) {
             QString displayText = selectedEvents[i]; // 从 selectedEvents 列表中获取第 i 个事件的文本
-            textBrowser->setPlainText(displayText);  // 设置事件文本
+
+            textBrowser->append(displayText);  // 设置事件文本
         }
     }
 }

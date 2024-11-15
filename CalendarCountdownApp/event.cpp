@@ -1,8 +1,8 @@
 #include "event.h"
 
 // 构造函数的定义
-Event::Event(const QString &title, const QDateTime &dateTime, const QString &category, const QString &description)
-    : title(title), dateTime(dateTime), category(category), description(description) {}
+Event::Event(const QString &title, const QDateTime &dateTime, const QString &category, const QString &description, const QTime &remindTime)
+    : title(title), dateTime(dateTime), category(category), description(description),  remindTime(remindTime){}
 
 // 方法定义
 QString Event::getTitle() const { return title; }

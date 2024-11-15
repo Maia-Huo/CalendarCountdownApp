@@ -57,7 +57,8 @@ QString WeatherFetcher::translateWeatherDescription(const QString &englishDescri
         {"rain", "雨"},
         {"thunderstorm", "雷暴"},
         {"snow", "雪"},
-        {"mist", "雾霾"}
+        {"mist", "雾霾"},
+        {"light rain", "小雨"}
     };
 
     // 如果存在对应的中文翻译，返回中文；否则返回原始英文

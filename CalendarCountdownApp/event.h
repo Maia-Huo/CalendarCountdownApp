@@ -1,6 +1,3 @@
-
-/*=================================================*/
-
 #ifndef EVENT_H
 #define EVENT_H
 
@@ -13,7 +10,7 @@
 class Event {
 public:
     Event() = default;
-    Event(const QString &title, const QDateTime &dateTime, const QString &category, const QString &description);
+    Event(const QString &title, const QDateTime &dateTime, const QString &category, const QString &description, const QTime &remindTime);
 
     QString getTitle() const;
     QDateTime getDateTime() const;

@@ -24,9 +24,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
+    login.cpp \
         mainwindow.cpp \
     event.cpp \
-    database.cpp \
     eventdialog.cpp \
     notifier.cpp \
     countdownwindow.cpp \
@@ -38,8 +38,8 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     event.h \
-    database.h \
     eventdialog.h \
+    login.h \
     notifier.h \
     countdownwindow.h \
     showevents.h \
@@ -51,6 +51,7 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     eventdialog.ui \
     countdownwindow.ui \
+    login.ui \
     showevents.ui \
     weekcalendar.ui \
     yearcalendar.ui
@@ -58,3 +59,6 @@ FORMS    += mainwindow.ui \
 DISTFILES += \
     EventdialogForm.ui.qml \
     Eventdialog.qml
+
+RESOURCES += \
+    resource.qrc
